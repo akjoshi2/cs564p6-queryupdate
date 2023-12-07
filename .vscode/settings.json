@@ -3,6 +3,7 @@
 		"select.C": "cpp",
 		"insert.C": "cpp",
 		"join.C": "cpp",
-		"joinHT.C": "cpp"
+		"joinHT.C": "cpp",
+		"catalog.C": "cpp"
 	}
 }
