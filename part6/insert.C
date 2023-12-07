@@ -50,18 +50,18 @@ const Status QU_Insert(const string & relation,
 				char* val;
 				float flt;
 				int intgr;
-				switch(attrList[i].attrType)
+				switch(attrList[j].attrType)
 				{
 					case INTEGER:
-						intgr = atoi((char*)attrList[i].attrValue);
+						intgr = atoi((char*)attrList[j].attrValue);
 						val = (char*)&intgr;
 						break;
 					case FLOAT:
-						flt = atof((char*)attrList[i].attrValue);
+						flt = atof((char*)attrList[j].attrValue);
 						val = (char*)&flt;
 						break;
 					case STRING:
-						val = (char*)attrList[i].attrValue;
+						val = (char*)attrList[j].attrValue;
 						break;
 				}
 				val = (char*)attrList[j].attrValue;
