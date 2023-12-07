@@ -27,7 +27,7 @@ const Status QU_Insert(const string & relation,
 	{ 
 		return status;
 	}
-	int totalRecLen;
+	int totalRecLen = 0;
 	for (int i = 0; i < relAttrCnt; i++)
 	{
 		totalRecLen += relAttrs[i].attrLen;
@@ -37,13 +37,13 @@ const Status QU_Insert(const string & relation,
     Record outputRec;
     outputRec.data = (void *) outputData;
     outputRec.length = totalRecLen;
-	for (int i = 0; i < attrCnt; i++)
+	for (int i = 0; i < relAttrCnt; i++)
 	{
-		for (int j = 0; j < relAttrCnt; j++)
+		for (int j = 0; j < attrCnt; j++)
 		{
-			if (strcmp(relAttrs[j].attrName,attrList[i].attrName) == 0)
+			if (strcmp(relAttrs[i].attrName,attrList[j].attrName) == 0)
 			{
-				if (attrList[i].attrValue == NULL)
+				if (attrList[j].attrValue == NULL)
 				{
 					return ATTRTYPEMISMATCH;
 				}
@@ -53,18 +53,19 @@ const Status QU_Insert(const string & relation,
 				switch(attrList[i].attrType)
 				{
 					case INTEGER:
-						intgr = atoi(attrList[i].attrValue);
+						intgr = atoi((char*)attrList[i].attrValue);
 						val = (char*)&intgr;
 						break;
 					case FLOAT:
-						flt = atof(attrList[i].attrValue);
+						flt = atof((char*)attrList[i].attrValue);
 						val = (char*)&flt;
 						break;
 					case STRING:
 						val = (char*)attrList[i].attrValue;
 						break;
 				}
-				memcpy(outputData + relAttrs[j].attrOffset, val, relAttrs[j].attrLen);
+				val = (char*)attrList[j].attrValue;
+				memcpy(outputData + relAttrs[i].attrOffset, val, relAttrs[i].attrLen);
 			}
 		}
 	}
