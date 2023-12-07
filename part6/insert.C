@@ -17,7 +17,7 @@ const Status QU_Insert(const string & relation,
 	Status status;
 	int relAttrCnt;
 	AttrDesc* relAttrs;
-	InsertFileScan resultRel(result, status);
+	InsertFileScan rel(result, status);
     if (status != OK)
 	{
 		return status;
@@ -27,6 +27,30 @@ const Status QU_Insert(const string & relation,
 	{ 
 		return status;
 	}
-	if (relAttrCnt)
+	if (relAttrCnt != attrCnt)
+	{
+		return ATTRTYPEMISMATCH;
+	}
+	int totalRecLen;
+	for (int i = 0; i < relAttrCnt; i++)
+	{
+		totalRecLen += relAttrs[i].attrLen;
+	}
+
+  	char outputData[totalRecLen];
+    Record outputRec;
+    outputRec.data = (void *) outputData;
+    outputRec.length = totalRecLen;
+	for (int i = 0; i < attrCnt; i++)
+	{
+
+	}
+	RID outRID;
+	status = rel.insertRecord(outputRec, outRID);
+	if (status != OK)
+	{
+		return status;
+	}
+	return OK;
 }
 
