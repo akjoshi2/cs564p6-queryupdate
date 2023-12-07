@@ -37,35 +37,35 @@ const Status QU_Insert(const string & relation,
     Record outputRec;
     outputRec.data = (void *) outputData;
     outputRec.length = totalRecLen;
-	for (int i = 0; i < relAttrCnt; i++)
+	for (int i = 0; i < attrCnt; i++)
 	{
-		for (int j = 0; j < attrCnt; j++)
+		for (int j = 0; j < relAttrCnt; j++)
 		{
-			if (strcmp(relAttrs[i].attrName,attrList[j].attrName) == 0)
+			if (strcmp(relAttrs[j].attrName,attrList[i].attrName) == 0)
 			{
-				if (attrList[j].attrValue == NULL)
+				if (attrList[i].attrValue == NULL)
 				{
 					return ATTRTYPEMISMATCH;
 				}
 				char* val;
 				float flt;
 				int intgr;
-				switch(attrList[j].attrType)
+				switch(attrList[i].attrType)
 				{
 					case INTEGER:
-						intgr = atoi((char*)attrList[j].attrValue);
+						intgr = atoi((char*)attrList[i].attrValue);
 						val = (char*)&intgr;
 						break;
 					case FLOAT:
-						flt = atof((char*)attrList[j].attrValue);
+						flt = atof((char*)attrList[i].attrValue);
 						val = (char*)&flt;
 						break;
 					case STRING:
-						val = (char*)attrList[j].attrValue;
+						val = (char*)attrList[i].attrValue;
 						break;
 				}
-				val = (char*)attrList[j].attrValue;
-				memcpy(outputData + relAttrs[i].attrOffset, val, relAttrs[i].attrLen);
+				val = (char*)attrList[i].attrValue;
+				memcpy(outputData + relAttrs[j].attrOffset, val, relAttrs[j].attrLen);
 			}
 		}
 	}
