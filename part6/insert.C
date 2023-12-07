@@ -53,7 +53,15 @@ const Status QU_Insert(const string & relation,
 				}
 				char* val;
 				val = (char*)attrList[j].attrValue;
-				memcpy(outputData + relAttrs[i].attrOffset, val, relAttrs[i].attrLen);
+				switch(relAttrs[i].attrType)
+				{
+					case INTEGER:
+						break;
+					case FLOAT:
+						break;
+					case STRING:
+						memcpy(outputData + relAttrs[i].attrOffset, val, relAttrs[i].attrLen);
+				}
 			}
 		}
 	}
