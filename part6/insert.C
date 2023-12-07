@@ -17,7 +17,7 @@ const Status QU_Insert(const string & relation,
 	Status status;
 	int relAttrCnt;
 	AttrDesc* relAttrs;
-	InsertFileScan rel(result, status);
+	InsertFileScan rel(relation, status);
     if (status != OK)
 	{
 		return status;
@@ -54,18 +54,20 @@ const Status QU_Insert(const string & relation,
 				char* val;
 				float flt;
 				int intgr;
-				val = (char*)attrList[j].attrValue;
-				/*switch(relAttrs[i].attrType)
+				switch(relAttrs[i].attrType)
 				{
 					case INTEGER:
-						val = char*(atoi(attrList[j].attrValue);
+						intgr = atoi(attrList[j].attrValue);
+						val = (char*)&intgr;
 						break;
 					case FLOAT:
 						flt = atof(attrList[j].attrValue);
+						val = (char*)&flt;
 						break;
 					case STRING:
+						val = (char*)attrList[j].attrValue;
 						break;
-				}*/
+				}
 				memcpy(outputData + relAttrs[i].attrOffset, val, relAttrs[i].attrLen);
 			}
 		}
