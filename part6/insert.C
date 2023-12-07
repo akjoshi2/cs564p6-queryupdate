@@ -52,16 +52,21 @@ const Status QU_Insert(const string & relation,
 					return ATTRTYPEMISMATCH;
 				}
 				char* val;
+				float flt;
+				int intgr;
 				val = (char*)attrList[j].attrValue;
-				switch(relAttrs[i].attrType)
+				/*switch(relAttrs[i].attrType)
 				{
 					case INTEGER:
+						val = char*(atoi(attrList[j].attrValue);
 						break;
 					case FLOAT:
+						flt = atof(attrList[j].attrValue);
 						break;
 					case STRING:
-						memcpy(outputData + relAttrs[i].attrOffset, val, relAttrs[i].attrLen);
-				}
+						break;
+				}*/
+				memcpy(outputData + relAttrs[i].attrOffset, val, relAttrs[i].attrLen);
 			}
 		}
 	}
