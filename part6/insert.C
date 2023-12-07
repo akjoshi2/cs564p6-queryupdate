@@ -41,9 +41,21 @@ const Status QU_Insert(const string & relation,
     Record outputRec;
     outputRec.data = (void *) outputData;
     outputRec.length = totalRecLen;
-	for (int i = 0; i < attrCnt; i++)
+	for (int i = 0; i < relAttrCnt; i++)
 	{
-
+		for (int j = 0; j < attrCnt; j++)
+		{
+			if (strcmp(relAttrs[i].attrName,attrList[j].attrName) == 0)
+			{
+				if (attrList[j].attrValue == NULL)
+				{
+					return ATTRTYPEMISMATCH;
+				}
+				char* val;
+				val = (char*)attrList[j].attrValue;
+				memcpy(outputData + relAttrs[i].attrOffset, val, relAttrs[i].attrLen);
+			}
+		}
 	}
 	RID outRID;
 	status = rel.insertRecord(outputRec, outRID);
