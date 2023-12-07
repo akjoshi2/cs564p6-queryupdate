@@ -64,7 +64,6 @@ const Status QU_Insert(const string & relation,
 						val = (char*)attrList[j].attrValue;
 						break;
 				}
-				//val = (char*)attrList[j].attrValue;
 				memcpy(outputData + relAttrs[i].attrOffset, val, relAttrs[i].attrLen);
 			}
 		}
