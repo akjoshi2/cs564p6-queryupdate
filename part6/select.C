@@ -28,6 +28,19 @@ const Status QU_Select(const string & result,
 {
    // Qu_Select sets up things and then calls ScanSelect to do the actual work
     cout << "Doing QU_Select " << endl;
+	Status status;
+	AttrDesc* projDesc;
+	projLen = 0;
+	projDesc = new AttrDesc[projCnt];
+	for (int i = 0; i < projCnt; i++)
+	{
+		status = attrCat->getInfo(projNames[i].relName, projNames[i].attrName, projDesc[i]);
+		if (status != OK)
+		{
+			return status;
+		}
+		projLen += projDesc[i].attrLen;
+	}
 
 }
 
