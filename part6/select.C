@@ -29,9 +29,11 @@ const Status QU_Select(const string & result,
    // Qu_Select sets up things and then calls ScanSelect to do the actual work
     cout << "Doing QU_Select " << endl;
 	Status status;
+	AttrDesc attrDesc;
 	AttrDesc* projDesc;
-	projLen = 0;
+	int len = 0;
 	projDesc = new AttrDesc[projCnt];
+	char* filt;
 	for (int i = 0; i < projCnt; i++)
 	{
 		status = attrCat->getInfo(projNames[i].relName, projNames[i].attrName, projDesc[i]);
@@ -39,15 +41,48 @@ const Status QU_Select(const string & result,
 		{
 			return status;
 		}
-		projLen += projDesc[i].attrLen;
+		len += projDesc[i].attrLen;
 	}
-
+	if (attr != NULL)
+	{
+		int intgr;
+		float flt;
+		switch (attr->attrType)
+		{
+			case INTEGER:
+				intgr = atoi(attrValue);
+				filt = (char*)&intgr;
+				break;
+			case FLOAT:
+				flt = atof(attrValue);
+				filt = (char*)&flt;
+				break;
+			case STRING:
+				filt = attrValue;
+				break;
+		}
+	}
+	else
+	{
+		strcpy(attrDesc.relName, projNames[0].relName);
+		strcpy(attrDesc.attrName, projNames[0].attrName);
+		attrDesc.attrOffset = 0;
+		attrDesc.attrLen = 0;
+		attrDesc.attrType = STRING;
+		filt = NULL;
+		op = EQ;
+	}
+	status = ScanSelect(result, projCnt, projDesc, &attrDesc, op, filt, len)
+	if (status != OK)
+	{
+		return status;
+	}
+	return OK;
 }
 
-
-const Status ScanSelect(const string & result, 
 #include "stdio.h"
 #include "stdlib.h"
+const Status ScanSelect(const string & result, 
 			const int projCnt, 
 			const AttrDesc projNames[],
 			const AttrDesc *attrDesc, 
