@@ -14,8 +14,10 @@ const Status QU_Insert(const string & relation,
 	const int attrCnt, 
 	const attrInfo attrList[])
 {
-// part 6
-return OK;
-
+	Status status;
+	AttrDesc* allAttrs;
+	InsertFileScan resultRel(result, status);
+    if (status != OK) { return status; }
+	status = attrCat->getRelInfo(relation, attrCnt, allAttrs);
 }
 
