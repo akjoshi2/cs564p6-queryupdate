@@ -33,7 +33,8 @@ const Status QU_Select(const string & result,
 	AttrDesc* projDesc;
 	int len = 0;
 	projDesc = new AttrDesc[projCnt];
-	char* filt;
+	const char* filt;
+	Operator operation;
 	for (int i = 0; i < projCnt; i++)
 	{
 		status = attrCat->getInfo(projNames[i].relName, projNames[i].attrName, projDesc[i]);
@@ -45,8 +46,14 @@ const Status QU_Select(const string & result,
 	}
 	if (attr != NULL)
 	{
+		status = attrCat->getInfo(attr->relName, attr->attrName, attrDesc);
+		if (status != OK)
+		{
+			return status;
+		}
 		int intgr;
 		float flt;
+		operation = op;
 		switch (attr->attrType)
 		{
 			case INTEGER:
@@ -70,9 +77,9 @@ const Status QU_Select(const string & result,
 		attrDesc.attrLen = 0;
 		attrDesc.attrType = STRING;
 		filt = NULL;
-		op = EQ;
+		operation = EQ;
 	}
-	status = ScanSelect(result, projCnt, projDesc, &attrDesc, op, filt, len)
+	status = ScanSelect(result, projCnt, projDesc, &attrDesc, operation, filt, len);
 	if (status != OK)
 	{
 		return status;
@@ -91,6 +98,47 @@ const Status ScanSelect(const string & result,
 			const int reclen)
 {
     cout << "Doing HeapFileScan Selection using ScanSelect()" << endl;
-
-
+	Status status;
+	InsertFileScan rel(result, status);
+	if (status != OK)
+	{
+		return status;
+	}
+	char outputData[reclen];
+	Record outputRec;
+	outputRec.data = (void*) outputData;
+	outputRec.length = reclen;
+	HeapFileScan scan(attrDesc->relName, status);
+	if (status != OK)
+	{
+		return status;
+	}
+	status = scan.startScan(attrDesc->attrOffset, attrDesc->attrLen, (Datatype) attrDesc->attrType, filter, op);
+	if (status != OK)
+	{
+		return status;
+	}
+	RID rid;
+	Record rec;
+	while (scan.scanNext(rid) == OK)
+	{
+		status = scan.getRecord(rec);
+		if (status != OK)
+		{
+			return status;
+		}
+		int offset = 0;
+		for (int i = 0; i < projCnt; i++)
+		{
+			memcpy(outputData + offset, (char*)rec.data + projNames[i].attrOffset, projNames[i].attrLen);
+			offset += projNames[i].attrLen;
+		}
+		RID newRid;
+		status = rel.insertRecord(outputRec, newRid);
+		if (status != OK)
+		{
+			return status;
+		}
+	}
+	return OK;
 }
