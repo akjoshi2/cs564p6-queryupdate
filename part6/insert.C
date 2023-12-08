@@ -27,6 +27,7 @@ const Status QU_Insert(const string & relation,
 	{ 
 		return status;
 	}
+	// Get total length
 	int totalRecLen = 0;
 	for (int i = 0; i < relAttrCnt; i++)
 	{
@@ -37,6 +38,7 @@ const Status QU_Insert(const string & relation,
     Record outputRec;
     outputRec.data = (void *) outputData;
     outputRec.length = totalRecLen;
+	// Need two loops to ensure the attributes are ordered correctly
 	for (int i = 0; i < relAttrCnt; i++)
 	{
 		for (int j = 0; j < attrCnt; j++)
@@ -50,6 +52,7 @@ const Status QU_Insert(const string & relation,
 				char* val;
 				float flt;
 				int intgr;
+				// Handle types
 				switch(attrList[j].attrType)
 				{
 					case INTEGER:
@@ -69,6 +72,7 @@ const Status QU_Insert(const string & relation,
 		}
 	}
 	RID outRID;
+	// Insert record
 	status = rel.insertRecord(outputRec, outRID);
 	if (status != OK)
 	{
