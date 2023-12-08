@@ -35,6 +35,7 @@ const Status QU_Select(const string & result,
 	projDesc = new AttrDesc[projCnt];
 	const char* filt;
 	Operator operation;
+	// Get all attribute info
 	for (int i = 0; i < projCnt; i++)
 	{
 		status = attrCat->getInfo(projNames[i].relName, projNames[i].attrName, projDesc[i]);
@@ -44,6 +45,7 @@ const Status QU_Select(const string & result,
 		}
 		len += projDesc[i].attrLen;
 	}
+
 	if (attr != NULL)
 	{
 		status = attrCat->getInfo(attr->relName, attr->attrName, attrDesc);
@@ -54,6 +56,7 @@ const Status QU_Select(const string & result,
 		int intgr;
 		float flt;
 		operation = op;
+		// Handle types
 		switch (attr->attrType)
 		{
 			case INTEGER:
@@ -69,6 +72,7 @@ const Status QU_Select(const string & result,
 				break;
 		}
 	}
+	// Handle case where attr is null
 	else
 	{
 		strcpy(attrDesc.relName, projNames[0].relName);
@@ -79,6 +83,7 @@ const Status QU_Select(const string & result,
 		filt = NULL;
 		operation = EQ;
 	}
+	// Call ScanSelect
 	status = ScanSelect(result, projCnt, projDesc, &attrDesc, operation, filt, len);
 	if (status != OK)
 	{
