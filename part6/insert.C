@@ -22,6 +22,7 @@ const Status QU_Insert(const string & relation,
 	{
 		return status;
 	}
+	// Get relation info
 	status = attrCat->getRelInfo(relation, relAttrCnt, relAttrs);
 	if (status != OK)
 	{ 
@@ -45,6 +46,7 @@ const Status QU_Insert(const string & relation,
 		{
 			if (strcmp(relAttrs[i].attrName,attrList[j].attrName) == 0)
 			{
+				//If no value is specified for the attribute, reject the insertion
 				if (attrList[j].attrValue == NULL)
 				{
 					return ATTRTYPEMISMATCH;

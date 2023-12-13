@@ -18,7 +18,7 @@ const Status QU_Delete(const string & relation,
 {
 	// return error if any input is null
     if (relation == "" || attrValue == nullptr) {
-        return BADSCANPARM; // idk if this is the right error message
+        return BADSCANPARM; 
     }
 
     Status status;

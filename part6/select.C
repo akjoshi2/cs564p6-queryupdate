@@ -45,7 +45,6 @@ const Status QU_Select(const string & result,
 		}
 		len += projDesc[i].attrLen;
 	}
-
 	if (attr != NULL)
 	{
 		status = attrCat->getInfo(attr->relName, attr->attrName, attrDesc);
@@ -72,9 +71,9 @@ const Status QU_Select(const string & result,
 				break;
 		}
 	}
-	// Handle case where attr is null
 	else
 	{
+		// If attr is null, unconditional scan should be performed
 		strcpy(attrDesc.relName, projNames[0].relName);
 		strcpy(attrDesc.attrName, projNames[0].attrName);
 		attrDesc.attrOffset = 0;
