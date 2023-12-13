@@ -45,7 +45,7 @@ const Status QU_Delete(const string & relation,
     } else {
         filter = (char*) new float(atof(attrValue));
     }
-    if (attrName.length == 0)
+    if (attrName.length() == 0)
     {
         //If no attribute given then scan through everything
         status = hfs.startScan(0,0,STRING,NULL,EQ);
