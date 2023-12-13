@@ -35,7 +35,7 @@ const Status QU_Select(const string & result,
 	projDesc = new AttrDesc[projCnt];
 	const char* filt;
 	Operator operation;
-	// Get all attribute info
+	// Get all attribute info and length
 	for (int i = 0; i < projCnt; i++)
 	{
 		status = attrCat->getInfo(projNames[i].relName, projNames[i].attrName, projDesc[i]);

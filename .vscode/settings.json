@@ -4,6 +4,8 @@
 		"insert.C": "cpp",
 		"join.C": "cpp",
 		"joinHT.C": "cpp",
-		"catalog.C": "cpp"
+		"catalog.C": "cpp",
+		"minirel.C": "cpp",
+		"delete.C": "cpp"
 	}
 }
