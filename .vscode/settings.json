@@ -6,6 +6,7 @@
 		"joinHT.C": "cpp",
 		"catalog.C": "cpp",
 		"minirel.C": "cpp",
-		"delete.C": "cpp"
+		"delete.C": "cpp",
+		"heapfile.C": "cpp"
 	}
 }

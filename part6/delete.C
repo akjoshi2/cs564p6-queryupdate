@@ -16,14 +16,8 @@ const Status QU_Delete(const string & relation,
 		       const Datatype type, 
 		       const char *attrValue)
 {
-	// return error if any input is null
-    if (relation == "" || attrValue == nullptr) {
-        return BADSCANPARM; 
-    }
-
     Status status;
     RID rid;
-    Record rec;
     AttrDesc attrDesc;
 
     HeapFileScan hfs(relation, status);
