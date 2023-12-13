@@ -45,8 +45,16 @@ const Status QU_Delete(const string & relation,
     } else {
         filter = (char*) new float(atof(attrValue));
     }
-    // scan through the heapfile with matching type, attrValue, and op
-    status = hfs.startScan(attrDesc.attrOffset, attrDesc.attrLen, type, filter, op);
+    if (attrName.length == 0)
+    {
+        //If no attribute given then scan through everything
+        status = hfs.startScan(0,0,STRING,NULL,EQ);
+    }
+    else
+    {
+        // scan through the heapfile with matching type, attrValue, and op
+        status = hfs.startScan(attrDesc.attrOffset, attrDesc.attrLen, type, filter, op);
+    }
     if (status != OK) return status;
 
     // delete tuples
